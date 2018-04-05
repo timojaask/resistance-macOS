@@ -6,7 +6,16 @@ let attentionText = "RSSTNC"
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
+    
+    let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     var timer: Timer?
+    
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
+        setTitle(regularText)
+        timer = Timer.scheduledTimer(withTimeInterval: flashInterval, repeats: true, block: { _ in
+            self.drawAttention()
+        })
+    }
     
     func drawAttention() {
         DispatchQueue.main.async {
@@ -23,8 +32,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-    
     func setTitle(_ title: String, foregroundColor: NSColor, backgroundColor: NSColor) {
         let attributes = [
             NSAttributedStringKey.foregroundColor: foregroundColor,
@@ -38,13 +45,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func setTitle(_ title: String) {
         statusItem.length = CGFloat(title.count * 8)
         statusItem.title = title
-    }
-
-    func applicationDidFinishLaunching(_ aNotification: Notification) {
-        setTitle(regularText)
-        timer = Timer.scheduledTimer(withTimeInterval: flashInterval, repeats: true, block: { _ in
-            self.drawAttention()
-        })
     }
 }
 
